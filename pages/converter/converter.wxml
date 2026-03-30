@@ -1,0 +1,58 @@
+<view class="container">
+  <view class="header">
+    <text class="title">单位转换</text>
+  </view>
+  
+  <view class="converter">
+    <view class="category-selector">
+      <scroll-view scroll-x="true" class="category-scroll">
+        <view class="category-item" 
+              wx:for="{{categories}}" 
+              wx:key="{{item.id}}"
+              class="{{currentCategory === item.id ? 'active' : ''}}"
+              bindtap="selectCategory" 
+              data-id="{{item.id}}">
+          {{item.name}}
+        </view>
+      </scroll-view>
+    </view>
+    
+    <view class="conversion-area">
+      <view class="input-section">
+        <text class="label">输入值</text>
+        <input class="input" 
+               type="number" 
+               value="{{inputValue}}" 
+               bindinput="onInputChange" 
+               placeholder="请输入数值"/>
+        <picker class="unit-picker" bindchange="onFromUnitChange" range="{{fromUnits}}">
+          <view class="picker-text">{{fromUnit}}</view>
+        </picker>
+      </view>
+      
+      <view class="swap-button" bindtap="swapUnits">
+        <text class="swap-icon">⇄</text>
+      </view>
+      
+      <view class="output-section">
+        <text class="label">转换结果</text>
+        <view class="output">{{outputValue}}</view>
+        <picker class="unit-picker" bindchange="onToUnitChange" range="{{toUnits}}">
+          <view class="picker-text">{{toUnit}}</view>
+        </picker>
+      </view>
+    </view>
+    
+    <view class="history-section">
+      <text class="section-title">转换历史</text>
+      <view class="history-list" wx:if="{{history.length > 0}}">
+        <view wx:for="{{history}}" wx:key="{{index}}" class="history-item">
+          <text>{{item.inputValue}} {{item.fromUnit}} = {{item.outputValue}} {{item.toUnit}}</text>
+        </view>
+      </view>
+      <view wx:else class="empty-history">
+        <text>暂无转换记录</text>
+      </view>
+    </view>
+  </view>
+</view>

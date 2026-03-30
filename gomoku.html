@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五子棋</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d4bc 100%);
+            font-family: "Microsoft YaHei", sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #5d4037;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .game-info {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .player-info.active {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .player-info .stone {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.3), 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .player-info.black .stone {
+            background: radial-gradient(circle at 30% 30%, #666, #000);
+        }
+
+        .player-info.white .stone {
+            background: radial-gradient(circle at 30% 30%, #fff, #ddd);
+        }
+
+        .player-info span {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .board-container {
+            position: relative;
+            background: #deb887;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            gap: 0;
+            background: #deb887;
+            border: 2px solid #8b4513;
+        }
+
+        .cell {
+            width: 35px;
+            height: 35px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cell::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #8b4513;
+        }
+
+        .cell::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #8b4513;
+        }
+
+        .cell:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .cell.stone {
+            cursor: default;
+        }
+
+        .cell.stone::before,
+        .cell.stone::after {
+            display: none;
+        }
+
+        .cell .stone {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.3), 2px 2px 4px rgba(0,0,0,0.2);
+            animation: placeStone 0.2s ease-out;
+        }
+
+        .cell .stone.black {
+            background: radial-gradient(circle at 30% 30%, #666, #000);
+        }
+
+        .cell .stone.white {
+            background: radial-gradient(circle at 30% 30%, #fff, #ddd);
+        }
+
+        .cell .stone.last {
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.3), 2px 2px 4px rgba(0,0,0,0.2), 0 0 10px 3px #ff6b6b;
+        }
+
+        @keyframes placeStone {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-undo {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-undo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.5);
+        }
+
+        .winner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .winner-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .winner-modal {
+            background: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            text-align: center;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .winner-overlay.show .winner-modal {
+            transform: scale(1);
+        }
+
+        .winner-modal h2 {
+            color: #5d4037;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .winner-modal p {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+        }
+
+        .winner-modal .stone {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.3), 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .winner-modal .stone.black {
+            background: radial-gradient(circle at 30% 30%, #666, #000);
+        }
+
+        .winner-modal .stone.white {
+            background: radial-gradient(circle at 30% 30%, #fff, #ddd);
+        }
+
+        .star-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <h1>五子棋</h1>
+    
+    <div class="game-info">
+        <div class="player-info black active" id="blackInfo">
+            <div class="stone"></div>
+            <span>黑方</span>
+        </div>
+        <div class="player-info white" id="whiteInfo">
+            <div class="stone"></div>
+            <span>白方</span>
+        </div>
+    </div>
+
+    <div class="board-container">
+        <div class="board" id="board"></div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-undo" id="undoBtn">悔棋</button>
+        <button class="btn-restart" id="restartBtn">重新开始</button>
+    </div>
+
+    <div class="winner-overlay" id="winnerOverlay">
+        <div class="winner-modal">
+            <div class="stone" id="winnerStone"></div>
+            <h2 id="winnerText">游戏结束</h2>
+            <p id="winnerSubText"></p>
+            <button class="btn-restart" id="playAgainBtn">再来一局</button>
+        </div>
+    </div>
+
+    <script>
+        const BOARD_SIZE = 15;
+        const BLACK = 1;
+        const WHITE = 2;
+        
+        let board = [];
+        let currentPlayer = BLACK;
+        let gameOver = false;
+        let history = [];
+        let lastMove = null;
+
+        const boardEl = document.getElementById('board');
+        const blackInfo = document.getElementById('blackInfo');
+        const whiteInfo = document.getElementById('whiteInfo');
+        const winnerOverlay = document.getElementById('winnerOverlay');
+        const winnerStone = document.getElementById('winnerStone');
+        const winnerText = document.getElementById('winnerText');
+        const winnerSubText = document.getElementById('winnerSubText');
+        const undoBtn = document.getElementById('undoBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const playAgainBtn = document.getElementById('playAgainBtn');
+
+        const starPoints = [
+            [3, 3], [3, 7], [3, 11],
+            [7, 3], [7, 7], [7, 11],
+            [11, 3], [11, 7], [11, 11]
+        ];
+
+        function initBoard() {
+            board = Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(0));
+            currentPlayer = BLACK;
+            gameOver = false;
+            history = [];
+            lastMove = null;
+            renderBoard();
+            updatePlayerInfo();
+            winnerOverlay.classList.remove('show');
+        }
+
+        function renderBoard() {
+            boardEl.innerHTML = '';
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+
+                    if (starPoints.some(([r, c]) => r === i && c === j)) {
+                        const star = document.createElement('div');
+                        star.className = 'star-point';
+                        cell.appendChild(star);
+                    }
+
+                    if (board[i][j] !== 0) {
+                        const stone = document.createElement('div');
+                        stone.className = `stone ${board[i][j] === BLACK ? 'black' : 'white'}`;
+                        if (lastMove && lastMove.row === i && lastMove.col === j) {
+                            stone.classList.add('last');
+                        }
+                        cell.appendChild(stone);
+                        cell.classList.add('stone');
+                    }
+
+                    cell.addEventListener('click', () => handleClick(i, j));
+                    boardEl.appendChild(cell);
+                }
+            }
+        }
+
+        function handleClick(row, col) {
+            if (gameOver || board[row][col] !== 0) return;
+
+            history.push({
+                row,
+                col,
+                player: currentPlayer,
+                lastMove: lastMove ? { ...lastMove } : null
+            });
+
+            board[row][col] = currentPlayer;
+            lastMove = { row, col };
+
+            renderBoard();
+
+            if (checkWin(row, col)) {
+                gameOver = true;
+                setTimeout(() => showWinner(currentPlayer), 300);
+                return;
+            }
+
+            currentPlayer = currentPlayer === BLACK ? WHITE : BLACK;
+            updatePlayerInfo();
+        }
+
+        function updatePlayerInfo() {
+            if (currentPlayer === BLACK) {
+                blackInfo.classList.add('active');
+                whiteInfo.classList.remove('active');
+            } else {
+                blackInfo.classList.remove('active');
+                whiteInfo.classList.add('active');
+            }
+        }
+
+        function checkWin(row, col) {
+            const directions = [
+                [[0, 1], [0, -1]],
+                [[1, 0], [-1, 0]],
+                [[1, 1], [-1, -1]],
+                [[1, -1], [-1, 1]]
+            ];
+
+            for (const [dir1, dir2] of directions) {
+                let count = 1;
+
+                let r = row + dir1[0];
+                let c = col + dir1[1];
+                while (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === currentPlayer) {
+                    count++;
+                    r += dir1[0];
+                    c += dir1[1];
+                }
+
+                r = row + dir2[0];
+                c = col + dir2[1];
+                while (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === currentPlayer) {
+                    count++;
+                    r += dir2[0];
+                    c += dir2[1];
+                }
+
+                if (count >= 5) return true;
+            }
+
+            return false;
+        }
+
+        function showWinner(player) {
+            winnerStone.className = `stone ${player === BLACK ? 'black' : 'white'}`;
+            winnerText.textContent = '恭喜获胜！';
+            winnerSubText.textContent = player === BLACK ? '黑方获得胜利' : '白方获得胜利';
+            winnerOverlay.classList.add('show');
+        }
+
+        function undo() {
+            if (history.length === 0 || gameOver) return;
+
+            const lastState = history.pop();
+            board[lastState.row][lastState.col] = 0;
+            currentPlayer = lastState.player;
+            lastMove = lastState.lastMove;
+
+            renderBoard();
+            updatePlayerInfo();
+        }
+
+        function restart() {
+            initBoard();
+        }
+
+        undoBtn.addEventListener('click', undo);
+        restartBtn.addEventListener('click', restart);
+        playAgainBtn.addEventListener('click', restart);
+
+        initBoard();
+    </script>
+</body>
+</html>

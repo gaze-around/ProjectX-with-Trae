@@ -1,0 +1,90 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.display {
+  flex: 1;
+  background-color: #2c3e50;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 20rpx;
+  min-height: 200rpx;
+}
+
+.history {
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 10rpx;
+}
+
+.result {
+  font-size: 64rpx;
+  font-weight: 300;
+  word-break: break-all;
+  max-width: 100%;
+  text-align: right;
+}
+
+.keypad {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  background-color: #34495e;
+}
+
+.row {
+  flex: 1;
+  display: flex;
+}
+
+.key {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid rgba(255,255,255,0.1);
+  font-size: 36rpx;
+  font-weight: 500;
+  color: white;
+  background-color: #34495e;
+  outline: none;
+}
+
+.key:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.key:active {
+  background-color: rgba(255,255,255,0.2);
+}
+
+.function {
+  background-color: #7f8c8d;
+}
+
+.operator {
+  background-color: #f39c12;
+}
+
+.equals {
+  background-color: #e74c3c;
+}
+
+.number {
+  background-color: #34495e;
+}
+
+.zero {
+  flex: 2;
+}
+
+.backspace {
+  font-size: 48rpx;
+  line-height: 1;
+}

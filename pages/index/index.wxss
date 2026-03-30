@@ -1,0 +1,129 @@
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40rpx;
+  padding-top: 20rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.tool-card {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx 20rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-5rpx);
+  box-shadow: 0 5rpx 20rpx rgba(0,0,0,0.1);
+}
+
+.tool-icon {
+  width: 80rpx;
+  height: 80rpx;
+  margin: 0 auto 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-icon image {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.tool-name {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.tool-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20rpx;
+  padding-left: 10rpx;
+  border-left: 4rpx solid #1677FF;
+}
+
+.recent-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.recent-item {
+  flex: 1 0 45%;
+  min-width: 150rpx;
+}
+
+.recent-link {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+}
+
+.recent-icon {
+  width: 50rpx;
+  height: 50rpx;
+  margin-right: 15rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recent-icon image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.recent-name {
+  font-size: 28rpx;
+  color: #333;
+  flex: 1;
+}
+
+.empty-recent {
+  background: white;
+  border-radius: 12rpx;
+  padding: 40rpx;
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+}

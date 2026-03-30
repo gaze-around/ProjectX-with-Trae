@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/calculator/calculator",
+    "pages/converter/converter",
+    "pages/timer/timer",
+    "pages/settings/settings"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "实用工具",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png"
+      },
+      {
+        "pagePath": "pages/calculator/calculator",
+        "text": "计算器",
+        "iconPath": "images/calculator.png",
+        "selectedIconPath": "images/calculator-active.png"
+      },
+      {
+        "pagePath": "pages/converter/converter",
+        "text": "转换器",
+        "iconPath": "images/converter.png",
+        "selectedIconPath": "images/converter-active.png"
+      },
+      {
+        "pagePath": "pages/timer/timer",
+        "text": "倒计时",
+        "iconPath": "images/timer.png",
+        "selectedIconPath": "images/timer-active.png"
+      },
+      {
+        "pagePath": "pages/settings/settings",
+        "text": "设置",
+        "iconPath": "images/settings.png",
+        "selectedIconPath": "images/settings-active.png"
+      }
+    ],
+    "color": "#666666",
+    "selectedColor": "#1677FF",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json"
+}

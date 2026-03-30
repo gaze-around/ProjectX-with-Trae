@@ -1,0 +1,49 @@
+<view class="container">
+  <view class="header">
+    <text class="title">实用工具</text>
+    <text class="subtitle">您的日常助手</text>
+  </view>
+  
+  <view class="tools-grid">
+    <navigator url="../calculator/calculator" class="tool-card">
+      <view class="tool-icon">
+        <image src="../../images/calculator.png" mode="aspectFit"></image>
+      </view>
+      <text class="tool-name">计算器</text>
+      <text class="tool-desc">基本计算功能</text>
+    </navigator>
+    
+    <navigator url="../converter/converter" class="tool-card">
+      <view class="tool-icon">
+        <image src="../../images/converter.png" mode="aspectFit"></image>
+      </view>
+      <text class="tool-name">单位转换</text>
+      <text class="tool-desc">多种单位换算</text>
+    </navigator>
+    
+    <navigator url="../timer/timer" class="tool-card">
+      <view class="tool-icon">
+        <image src="../../images/timer.png" mode="aspectFit"></image>
+      </view>
+      <text class="tool-name">倒计时</text>
+      <text class="tool-desc">精准计时功能</text>
+    </navigator>
+  </view>
+  
+  <view class="recent-usage">
+    <text class="section-title">最近使用</text>
+    <view class="recent-list" wx:if="{{recentTools.length > 0}}">
+      <view wx:for="{{recentTools}}" wx:key="{{index}}" class="recent-item">
+        <navigator url="{{item.url}}" class="recent-link">
+          <view class="recent-icon">
+            <image src="{{item.icon}}" mode="aspectFit"></image>
+          </view>
+          <text class="recent-name">{{item.name}}</text>
+        </navigator>
+      </view>
+    </view>
+    <view wx:else class="empty-recent">
+      <text>暂无使用记录</text>
+    </view>
+  </view>
+</view>

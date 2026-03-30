@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="header">
+    <text class="title">倒计时</text>
+  </view>
+  
+  <view class="timer-display">
+    <text class="time">{{timeDisplay}}</text>
+  </view>
+  
+  <view class="time-inputs">
+    <view class="input-group">
+      <text class="label">小时</text>
+      <input class="input" type="number" value="{{hours}}" bindinput="onHoursChange" placeholder="00"/>
+    </view>
+    <view class="input-group">
+      <text class="label">分钟</text>
+      <input class="input" type="number" value="{{minutes}}" bindinput="onMinutesChange" placeholder="00"/>
+    </view>
+    <view class="input-group">
+      <text class="label">秒</text>
+      <input class="input" type="number" value="{{seconds}}" bindinput="onSecondsChange" placeholder="00"/>
+    </view>
+  </view>
+  
+  <view class="controls">
+    <button class="control-button start" bindtap="startTimer" wx:if="{{!isRunning}}">开始</button>
+    <button class="control-button pause" bindtap="pauseTimer" wx:elif="{{isRunning && !isPaused}}">暂停</button>
+    <button class="control-button resume" bindtap="resumeTimer" wx:elif="{{isRunning && isPaused}}">继续</button>
+    <button class="control-button reset" bindtap="resetTimer">重置</button>
+  </view>
+  
+  <view class="presets">
+    <text class="section-title">快捷预设</text>
+    <view class="preset-buttons">
+      <button class="preset-button" bindtap="setPreset" data-hours="0" data-minutes="1" data-seconds="0">1分钟</button>
+      <button class="preset-button" bindtap="setPreset" data-hours="0" data-minutes="5" data-seconds="0">5分钟</button>
+      <button class="preset-button" bindtap="setPreset" data-hours="0" data-minutes="10" data-seconds="0">10分钟</button>
+      <button class="preset-button" bindtap="setPreset" data-hours="0" data-minutes="15" data-seconds="0">15分钟</button>
+      <button class="preset-button" bindtap="setPreset" data-hours="0" data-minutes="30" data-seconds="0">30分钟</button>
+      <button class="preset-button" bindtap="setPreset" data-hours="1" data-minutes="0" data-seconds="0">1小时</button>
+    </view>
+  </view>
+  
+  <view class="history-section">
+    <text class="section-title">历史记录</text>
+    <view class="history-list" wx:if="{{history.length > 0}}">
+      <view wx:for="{{history}}" wx:key="{{index}}" class="history-item">
+        <text>{{item.time}} - {{item.status}}</text>
+      </view>
+    </view>
+    <view wx:else class="empty-history">
+      <text>暂无历史记录</text>
+    </view>
+  </view>
+</view>

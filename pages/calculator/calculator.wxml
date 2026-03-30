@@ -1,0 +1,42 @@
+<view class="container">
+  <view class="display">
+    <text class="history">{{history}}</text>
+    <text class="result">{{display}}</text>
+  </view>
+  
+  <view class="keypad">
+    <view class="row">
+      <button class="key function" bindtap="clear">C</button>
+      <button class="key function" bindtap="backspace"><text class="backspace">←</text></button>
+      <button class="key function" bindtap="toggleSign">±</button>
+      <button class="key operator" bindtap="appendOperator" data-op="/">÷</button>
+    </view>
+    
+    <view class="row">
+      <button class="key number" bindtap="appendNumber" data-num="7">7</button>
+      <button class="key number" bindtap="appendNumber" data-num="8">8</button>
+      <button class="key number" bindtap="appendNumber" data-num="9">9</button>
+      <button class="key operator" bindtap="appendOperator" data-op="*">×</button>
+    </view>
+    
+    <view class="row">
+      <button class="key number" bindtap="appendNumber" data-num="4">4</button>
+      <button class="key number" bindtap="appendNumber" data-num="5">5</button>
+      <button class="key number" bindtap="appendNumber" data-num="6">6</button>
+      <button class="key operator" bindtap="appendOperator" data-op="-">-</button>
+    </view>
+    
+    <view class="row">
+      <button class="key number" bindtap="appendNumber" data-num="1">1</button>
+      <button class="key number" bindtap="appendNumber" data-num="2">2</button>
+      <button class="key number" bindtap="appendNumber" data-num="3">3</button>
+      <button class="key operator" bindtap="appendOperator" data-op="+">+</button>
+    </view>
+    
+    <view class="row">
+      <button class="key number zero" bindtap="appendNumber" data-num="0">0</button>
+      <button class="key number" bindtap="appendDecimal">.</button>
+      <button class="key equals" bindtap="calculate">=</button>
+    </view>
+  </view>
+</view>
